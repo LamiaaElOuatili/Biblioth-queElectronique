@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All Users</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <style>
+        .user-card {
+            border: 1px solid #ccc;
+            padding: 16px;
+            margin: 16px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .user-card h2 {
+            margin: 0 0 8px;
+        }
+        .user-card p {
+            margin: 4px 0;
+        }
+        .booked-list ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .booked-list li {
+            margin: 4px 0;
+        }
+        .make-admin-btn {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 24px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div id="droitehistory">
+        <div id="history">
+            <div>
+                <button onclick="window.location.href='/admin'" class="category-btn">Returns</button>
+                <button onclick="window.location.href='/admin/add_book'" class="category-btn">Add book</button>
+                <button onclick="window.location.href='/admin/update_book'" class="category-btn">Update book</button>
+                <button onclick="window.location.href='/admin/delete_book'" class="category-btn">Delete book</button>
+                <button onclick="window.location.href='/admin/all_books'" class="category-btn">All books</button>
+                <button onclick="window.location.href='/admin/all_users'" class="category-btn">All Users</button>
+                <button onclick="window.location.href='/admin/all_admins'" class="category-btn">All Admins</button>
+                <form action="{{ url_for('logout') }}" method="post">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button type="submit" onclick="window.location.href='/admin/all_admins'" id="logout" class="category-btn">Logout</button>
+                </form>
+            </div>
+            
+            <div id="addform">
+                <h1>All Users</h1>
+                <div class="users-container">
+                    {% for user in all_users if user.role == 'user' %}
+                    <div class="user-card">
+                        <h2>{{ user.username }}</h2>
+                        <p><strong>Email:</strong> {{ user.email }}</p>
+                        <div class="booked-list">
+                            <p><strong>Booked List:</strong></p>
+                            {% if user.booked_books %}
+                            <ul>
+                                {% for booked_book in user.booked_books %}
+                                    {% set book_details = get_book_details(booked_book.book_id) %}
+                                    {% if book_details %}
+                                        <li>{{ book_details.title }} - {{ booked_book.date_booked.strftime('%d/%m/%Y') }}{% if booked_book.returned %} (Returned on {{ booked_book.date_returned.strftime('%d/%m/%Y') }}){% endif %}</li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                            {% else %}
+                                <p>No books booked</p>
+                            {% endif %}
+                        </div>
+                        <form action="{{ url_for('make_admin', user_id=user._id) }}" method="POST">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <button type="submit" class="make-admin-btn">Make Admin</button>
+                        </form>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

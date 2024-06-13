@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <title>Booking History</title>
+</head>
+<body>
+    <div id="container">
+        <div id="greetings2">
+            Welcome, {{ current_user.user_data['username'] }}!
+        </div>
+        <div id="gauche">
+            <div id="titre">BOOKLY</div>
+            <div id="gauchebuttons">
+                <button onclick="window.location.href='/'">Home</button>
+                <button onclick="window.location.href='/booked'">Booked</button>
+                <button id="current" onclick="window.location.href='/history'">History</button>
+                <form action="{{ url_for('logout') }}" method="post">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button type="submit">Logout</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="droite2">
+            <h2>Each book should be brought back no later than one week after being loaned.</h2>
+            <h2>You cannot have more than 3 loaned books.</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Date Booked</th>
+                        <th>Returned Date</th>
+                    </tr>
+                </thead>
+                
+                </thead>
+                <tbody>
+                    {% for user in all_users %}
+                        {% if user.email == current_user.user_data.email %}
+                            {% for booked_book in user.booked %}
+                                {% set book = get_book_details(booked_book.book_id) %}
+                                <tr>
+                                    <td>{{ book.title }}</td>
+                                    <td>{{ booked_book.date_booked.strftime('%d/%m/%Y') }}</td>
+                                    <td>
+                                        {% if booked_book.returned %}
+                                            {{ booked_book.date_returned.strftime('%d/%m/%Y') if booked_book.date_returned else 'Not Yet' }}
+                                        {% else %}
+                                            Not Yet
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</body>
+</html>

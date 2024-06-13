@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <title>Booked Books</title>
+</head>
+<body>
+    <div id="container">
+        <div id="greetings2">
+            Welcome, {{ current_user.user_data['username'] }}!
+        </div>
+    <div id="gauche">
+        <div id="titre">BOOKLY</div>
+        <div id="gauchebuttons">
+            <button onclick="window.location.href='/'">Home</button>
+            <button id="current" onclick="window.location.href='/booked'"  >Booked</button>
+            <button  onclick="window.location.href='/history'">History</button>
+            <form action="{{ url_for('logout') }}" method="post">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit">Logout</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="droite2">
+        <h2>Each book should be brought back no later than one week after being loaned.</h2>
+        <h2>You cannot have more than 3 loaned books.</h2>
+        <div id="books2">
+            {% for book in booked_books_info %}
+                {% if not book.returned %}
+                    <div class="book">
+                        <img src="{{ book.cover }}">
+                        <div class="book-title">{{ book.title }} , {{ book.date_booked }}</div>  
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+        
+        
+    </div>
+
+    </div>
+</body>
+</html>

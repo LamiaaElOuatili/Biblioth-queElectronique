@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <title>Library Data</title>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Category buttons event listener
+            const categoryButtons = document.querySelectorAll('.category-btn');
+            categoryButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const category = this.textContent;
+                    filterBooksByCategory(category);
+                });
+            });
+
+            // Function to filter books by category
+            function filterBooksByCategory(category) {
+                const books = document.querySelectorAll('.book');
+                books.forEach(book => {
+                    if (category === 'All' || book.dataset.category === category) {
+                        book.style.display = 'block';
+                    } else {
+                        book.style.display = 'none';
+                    }
+                });
+            }
+
+            // Available button event listener
+            const availableButton = document.querySelector('.available-btn');
+            availableButton.addEventListener('click', function() {
+                filterBooksByQuantity();
+            });
+
+            // Function to filter books by quantity
+            function filterBooksByQuantity() {
+                const books = document.querySelectorAll('.book');
+                books.forEach(book => {
+                    const quantity = parseInt(book.dataset.quantity);
+                    if (quantity > 0) {
+                        book.style.display = 'block';
+                    } else {
+                        book.style.display = 'none';
+                    }
+                });
+            }
+
+            // Search input event listener
+            const searchInput = document.querySelector('.search-container input');
+            searchInput.addEventListener('input', function() {
+                const query = this.value.toLowerCase();
+                filterBooksBySearch(query);
+            });
+
+            // Function to filter books by search query
+            function filterBooksBySearch(query) {
+                const books = document.querySelectorAll('.book');
+                books.forEach(book => {
+                    const title = book.querySelector('.book-title').textContent.toLowerCase();
+                    const author = book.querySelector('.book-author').textContent.toLowerCase();
+                    if (title.includes(query) || author.includes(query)) {
+                        book.style.display = 'block';
+                    } else {
+                        book.style.display = 'none';
+                    }
+                });
+            }
+        });
+    </script>
+</head>
+<body>
+    <div id="container">
+        <div class="search-container">
+            <input type="text" placeholder="Search name of the book or author...">
+        </div>
+        <div id="greetings">
+            Welcome, {{ current_user.user_data['username'] }}!
+        </div>
+
+        <div id="gauche">
+            <div id="titre">BOOKLY</div>
+            <div id="gauchebuttons">
+                <button id="current" onclick="window.location.href='/'">Home</button>
+                <button onclick="window.location.href='/booked'">Booked</button>
+                <button  onclick="window.location.href='/history'">History</button>
+                <form action="{{ url_for('logout') }}" method="post">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button type="submit">Logout</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="droite">
+            <div id="categories">
+                <button class="category-btn">All</button>
+                {% set displayed_categories = [] %}
+                {% for book in books %}
+                    {% if book.category not in displayed_categories %}
+                        <button class="category-btn">{{ book.category }}</button>
+                        {% set _ = displayed_categories.append(book.category) %}
+                    {% endif %}
+                {% endfor %}
+                <button class="category-btn available-btn">Available</button>
+            </div>
+            <div id="books">
+                {% for book in books %}
+                    <div class="book" data-category="{{ book.category }}" data-quantity="{{ book.quantity }}" data-id="{{ book['_id'] }}">
+                        <div id="res">
+                                <button class="book-btn">Book</button>
+                        </div>
+                        <a href="{{ url_for('book_details', book_id=book['_id']) }}"> 
+                            <img src="{{ book.cover }}" alt="{{ book.title }} Cover">
+                        </a>
+                        <div class="book-title">{{ book.title }}</div>
+                        <div class="book-author">{{ book.author }}</div> <!-- Added author display -->
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const bookButtons = document.querySelectorAll('.book-btn');
+            bookButtons.forEach(button => {
+                button.addEventListener('click', async function() {
+                    const bookId = this.closest('.book').dataset.id;
+                    try {
+                        const response = await fetch(/book/${bookId}, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRFToken': '{{ csrf_token() }}'
+                            }
+                        });
+                        const data = await response.json();
+                        if (!response.ok) {
+                            if (data.message === 'Book already booked') {
+                                alert('You have already booked this book.');
+                            } else if (data.message === "You can't book more than 3 books") {
+                                alert("You can't book more than 3 books.");
+                            } else {
+                                throw new Error(data.message);
+                            }
+                        } else {
+                            alert('Booked successfully!');
+                            const bookElement = this.closest('.book');
+                            const quantityDisplay = bookElement.querySelector('.quantity-display');
+                            const currentQuantity = parseInt(quantityDisplay.textContent);
+                            quantityDisplay.textContent = currentQuantity - 1;
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                    }
+                });
+            });
+        });
+    </script>
+    
+</body>
+</html>

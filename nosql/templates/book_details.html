@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <title>{{ book.title }}</title>
+</head>
+<body>
+        <div id="container">
+        <div id="greetings">
+            Welcome, {{ current_user.user_data['username'] }}!
+        </div>
+    
+        <div id="gauche">
+            <div id="titre">BOOKLY</div>
+            <div id="gauchebuttons">
+                <button id="current" onclick="window.location.href='/'">Home</button>
+                <button onclick="window.location.href='/booked'">Booked</button>
+                <button  onclick="window.location.href='/history'">History</button>
+                <form action="{{ url_for('logout') }}" method="post">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button type="submit">Logout</button>
+                </form>
+            </div>
+        </div>
+        <div id="droite3">
+            <h1>{{ book.title }}</h1>
+            <img id="imginfo" src={{book.cover}}>
+            <div id="bookinfo">
+                <p><strong>Author:</strong> {{ book.author }}</p>
+                <p><strong>Category:</strong> {{ book.category }}</p>
+                <p><strong>About:</strong> {{ book.about }}</p>
+            </div>
+            </div>
+        </div>
+
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/register.css') }}">
+    <title>Register</title>
+    <script>
+        function validateForm() {
+            var emailInput = document.getElementById('email');
+            var email = emailInput.value;
+            var pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+            if (!pattern.test(email)) {
+                alert('Please enter a valid email address.');
+                return false;
+            }
+
+            return true;
+        }
+    </script>
+</head>
+<body>
+    <form action="{{ url_for('register') }}" method="POST" enctype="multipart/form-data" onsubmit="return validateForm()">
+        <h2>Sign up to discover amazing books!</h2>
+        <div>
+            <input placeholder="Enter your username" type="text" id="username" name="username" required>
+        </div>
+        <div>
+            <input placeholder="Enter your email" type="email" id="email" name="email" required>
+        </div>
+        <div>
+            <input placeholder="Enter your password" type="password" id="password" name="password" required>
+        </div>
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button type="submit">Register</button>
+        <div>
+            <a href="{{ url_for('login') }}">Already have an account? Login</a>
+        </div>
+    </form>
+</body>
+</html>

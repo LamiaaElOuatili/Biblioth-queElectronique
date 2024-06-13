@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete Book</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+</head>
+<body>
+    <div id="droitehistory">
+        <div id="history">
+            <div>
+                <button onclick="window.location.href='/admin'" class="category-btn">Returns</button>
+                <button onclick="window.location.href='/admin/add_book'" class="category-btn">Add book</button>
+                <button onclick="window.location.href='/admin/update_book'"class="category-btn">Update book</button>
+                <button onclick="window.location.href='/admin/delete_book'" class="category-btn">Delete book</button>
+                <button onclick="window.location.href='/admin/all_books'" class="category-btn">All books</button>
+                <button onclick="window.location.href='/admin/all_users'" class="category-btn">All Users</button>
+                <button onclick="window.location.href='/admin/all_admins'" class="category-btn">All Admins</button>
+                <form action="{{ url_for('logout') }}" method="post">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button type="submit" onclick="window.location.href='/admin/all_admins'" id="logout" class="category-btn">Logout</button>
+                </form>
+            </div>
+        
+            <div id="addform">
+                <form id="update-form" method="POST" action="{{ url_for('delete_book') }}">
+                    <h1>Delete Book</h1>
+                    {{ form.csrf_token }}
+                    <div class="form-group">
+                        <label for="book_name">Select the book to delete:</label>
+                        <select id="book_name" name="book_name" required>
+                            {% for book in books %}
+                                <option value="{{ book.title }}">{{ book.title }}</option>
+                            {% endfor %}
+                        </select>
+                        {% for error in form.book_name.errors %}
+                            <span style="color: red;">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    <button type="submit" class="red-submit2">Delete</button>
+                </form>
+            </div>
+            
+            {% if delete_success == true %}
+                <script>
+                    alert("Book deleted successfully!");
+                </script>
+            {% elif delete_success == false %}
+                <script>
+                    alert("Failed to delete book!");
+                </script>
+            {% endif %}
+
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        .overdue {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div id="droitehistory">
+        <div id="history">
+            <div>
+                <button onclick="window.location.href='/admin'" class="category-btn">Returns</button>
+                <button onclick="window.location.href='/admin/add_book'" class="category-btn">Add book</button>
+                <button onclick="window.location.href='/admin/update_book'" class="category-btn">Update book</button>
+                <button onclick="window.location.href='/admin/delete_book'" class="category-btn">Delete book</button>
+                <button onclick="window.location.href='/admin/all_books'" class="category-btn">All books</button>
+                <button onclick="window.location.href='/admin/all_users'" class="category-btn">All Users</button>
+                <button onclick="window.location.href='/admin/all_admins'" class="category-btn">All Admins</button>
+                <form action="{{ url_for('logout') }}" method="post">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button type="submit" id="logout" class="category-btn">Logout</button>
+                </form>
+            </div>
+            <div class="search-container">
+                <input id="search-input" type="text" placeholder="Search user's mail ...">
+            </div>
+            {% for user in all_users %}
+            {% if user.booked_books %}
+                <div class="user-history" data-user-email="{{ user.email }}">
+                    <h3>User: {{ user.email }}</h3>
+                    <ul>
+                        {% for booked_book in user.booked_books %}
+                            <li id="record-{{ booked_book.book_id }}" class="{{ 'overdue' if booked_book.is_overdue else '' }}">
+                                {{ booked_book.title }}, {{ booked_book.date_booked }}
+                                <button class="return-button" data-book-id="{{ booked_book.book_id }}" data-user-email="{{ user.email }}">Return</button>
+                            </li>
+                        {% endfor %}
+
+                    </ul>
+                </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    <script>
+        $(document).ready(function() {
+            $('#search-input').on('keyup', function() {
+                const searchTerm = $(this).val().toLowerCase();
+                $('.user-history').each(function() {
+                    const userEmail = $(this).data('user-email').toLowerCase();
+                    if (userEmail.includes(searchTerm)) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+            });
+
+            $('.return-button').click(function() {
+                const bookId = $(this).data('book-id');
+                const userEmail = $(this).data('user-email');
+                const csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+                $.ajax({
+                    url: '/return_book/' + bookId,
+                    type: 'POST',
+                    contentType: 'application/json',
+                    headers: {
+                        'X-CSRFToken': csrfToken
+                    },
+                    data: JSON.stringify({
+                        user_email: userEmail
+                    }),
+                    success: function(response) {
+                        alert(response.message);
+                        location.reload();
+                    },
+                    error: function(response) {
+                        let errorMessage = 'An error occurred';
+                        if (response.responseJSON && response.responseJSON.message) {
+                            errorMessage = response.responseJSON.message;
+                        }
+                        alert(errorMessage);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

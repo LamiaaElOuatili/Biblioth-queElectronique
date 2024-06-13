@@ -1,0 +1,291 @@
+body {
+    background-color: #ffcd87;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#container {
+    border: 1px solid #f1e6cf;
+    background-color: #f1e6cf;
+    border-radius: 20px;
+    padding: 20px;
+    margin: 20px 20px;
+}
+
+.book-author{
+    display: none;
+}
+
+.search-container {
+    position: relative;
+    display: flex;
+    justify-content: center; 
+    width: 100%;
+}
+
+.search-container input {
+    width: 270px;
+    padding-left: 10px; 
+    height: 25px;
+    border: 1px solid grey;
+    border-radius: 5px;
+}
+
+#titre {
+    font-weight: bolder;
+    color: #7c3f00;
+    margin-left: 15px;
+    font-size: larger;
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    margin-bottom: 50px;
+}
+
+#categories {
+    margin-left: 20px;
+    margin-bottom: 10px;
+    margin-top: -180px;
+}
+.category-btn {
+    margin-top: 10px;
+    border: none;
+    padding: 5px;
+    background-color: #f1e6cf ;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.category-btn:hover {
+    background-color: #ffcd87;
+    color: white;
+    border-radius: 5px;
+}
+
+#droite {
+    margin-left: 200px;
+}
+
+#droite2 {
+    margin-left: 200px;
+    margin-top: -200px;
+}
+#droite3 {
+    margin-left: 200px;
+    margin-top: -200px;
+    height: 400px;
+}
+
+#gauchebuttons button {
+    color: #7c3f00;
+    background-color: #f1e6cf;
+    text-align: left;
+    padding: 10px;
+    border: none;
+    margin-bottom: 5px;
+    display: block; 
+    width: 180px; 
+    cursor: pointer;
+}   
+
+#gauchebuttons button:hover{
+    background-color: #f9f3ee;
+    border-radius: 10px;
+}
+
+#gauchebuttons #current{
+    background-color: #f9f3ee;
+    border-radius: 10px;
+}
+
+#books {
+    background-color: #f9f3ee;
+    border-radius: 20px;
+    padding: 10px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px; 
+    padding-top: 50px;
+}
+
+
+#books2 {
+    background-color: #f9f3ee;
+    border-radius: 20px;
+    padding: 10px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); 
+    gap: 20px; 
+    padding-top: 20px;
+}
+
+
+.book {
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.book img {
+    width: 100px;
+    height: 120px;
+    margin-top: -10px;
+
+}
+
+.book-title {
+    width: 100px;
+    margin-left: 35px;
+}
+
+.book-btn{
+    cursor: pointer;
+    background-color: #ffcd87;
+    border: none;
+    border-radius: 5px;
+}
+
+#res{
+    margin-left: 100px;
+    position: relative;
+    z-index: 99;
+}
+
+.book[data-quantity="0"] .book-btn{
+    background-color: gray;
+    cursor: not-allowed;
+    color: white;
+}
+
+
+#greetings{
+    margin-left: 1000px;
+    margin-top: -20px;
+}
+#greetings2{
+    margin-left: 1000px;
+}
+
+
+th{
+    text-align: left; 
+    padding-right: 300px;
+}
+
+#droitehistory{
+    background-color: white;
+    margin: 100px 50px;
+    padding: 10px;
+    border-radius: 10px;
+}
+#droitehistory2{
+    background-color: white;
+    margin: 100px 50px;
+    padding: 10px;
+    border-radius: 10px;
+    height: 600px;
+}
+
+#droitehistory3{
+    background-color: white;
+    margin: 100px 50px;
+    padding: 10px;
+    border-radius: 10px;
+    height: 700px;
+}
+.overdue {
+    color: red;
+}
+
+
+.return-button{
+    background-color: green;
+    border: none;
+    color: white;
+    height: 25px;
+    border-radius: 5px;
+    margin-left: 900px;
+    margin-top: -10px;
+}
+
+#addform{
+    background-color: #f1e6cf;
+    margin:50px ;
+    padding: 20px 50px;
+    border-radius: 10px;
+}
+
+input{
+    width: 250px;
+    border: none;
+    padding: 10px;
+    margin-bottom: 5px;
+}
+
+
+
+#seebook{
+    margin-left: 700px;
+    margin-top: -350px;
+}
+
+#live-cover {
+    width: 150px;
+    height: 200px;
+}
+
+#live-title {
+    width: 150px; 
+    text-align: center;
+    margin-top: 10px;
+}
+.red-submit {
+        margin-top: 10px;
+        background-color: #ffcd87;
+        border-radius: 5px;
+        width: 400px;
+        height: 40px;
+        width: 270px;
+        border: none;
+        padding: 10px;
+        margin-bottom: 5px;
+        cursor: pointer;
+}
+
+.red-submit:hover {
+    background-color: #f9f3ee;
+}
+
+
+.red-submit2 {
+    position: absolute;
+    background-color: #ffcd87;
+    border-radius: 5px;
+    width: 400px;
+    height: 40px;
+    width: 270px;
+    border: none;
+    padding: 10px;
+    margin-bottom: 5px;
+    cursor: pointer;
+    margin-left: 600px;
+    margin-top: -30px;
+}
+select{
+    height: 30px;
+}
+#logout {
+    position: absolute;
+    margin-left: 1170px;
+    margin-top: -25px;
+}
+.red-text {
+    color: red;
+}
+
+
+#imginfo{
+    width: 200px;
+    height: 300px;
+}
+
+#bookinfo{
+    margin-left: 230px;
+    margin-top: -300px;
+}
