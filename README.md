@@ -25,7 +25,7 @@ o	Suivre les prêts et les retours des livres, assurant une gestion efficace des
 
 o	Assurer une synchronisation cohérente et en temps réel des données entre MongoDB et Neo4j, garantissant que les informations sont toujours à jour et fiables.
 
-Bonus
+### Bonus
 En plus des fonctionnalités principales, le projet prévoit également le développement d'un module d'authentification et de gestion des utilisateurs de l'application en utilisant Neo4j, MongoDB, ou une autre base de données NoSQL. Ce module devrait inclure :
 
 •	Authentification : Gestion des connexions et des sessions utilisateur, assurant la sécurité des accès.
