@@ -1,4 +1,4 @@
-# Biblioth-queElectronique
+# Bibliothèque Electronique
 ![WhatsApp Image 2024-06-03 à 21 46 42_dfd4e746](https://github.com/LamiaaElOuatili/Biblioth-queElectronique/assets/121641051/21a167a4-4379-46c1-9a52-b32cae3ca116)
 
 
