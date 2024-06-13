@@ -27,5 +27,7 @@ o	Assurer une synchronisation cohérente et en temps réel des données entre Mo
 
 Bonus
 En plus des fonctionnalités principales, le projet prévoit également le développement d'un module d'authentification et de gestion des utilisateurs de l'application en utilisant Neo4j, MongoDB, ou une autre base de données NoSQL. Ce module devrait inclure :
+
 •	Authentification : Gestion des connexions et des sessions utilisateur, assurant la sécurité des accès.
+
 •	Gestion des Utilisateurs : Création, mise à jour et suppression des comptes utilisateurs, gestion des rôles et des permissions pour un contrôle d'accès granulaire.
